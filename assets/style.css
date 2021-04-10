@@ -1,5 +1,10 @@
+a{
+    text-decoration: none;
+}
+
 h1{
     font-size: 20px;
+    float: right;
 }
    
 h2{
@@ -14,6 +19,20 @@ p{
 .btn-start{
     background-color: #957DAD;
     border-radius: 4px;
+    color: white;
+   
+}
+
+.clear{
+    border-radius: 4px;
+    background-color: #957DAD;
+    color: white;
+}
+
+.back{
+    border-radius: 4px;
+    background-color: #957DAD;
+    color: white;
 }
 
 
