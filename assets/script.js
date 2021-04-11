@@ -116,12 +116,21 @@ function displayQuestion(index) {
                 // When it is correct
                 feedbackElem.textContent = "You got the correct choice!";
                 currQuestion = currQuestion + 1;
-                displayQuestion(currQuestion);
+                // if currQuestion is equal to the length of questions array.
+                // then we display the results
+                if (currQuestion === questions.length) {
+                    // We are done!
+                    clearInterval(timerId);
+                    displayResults();
+                } else {
+                    displayQuestion(currQuestion);
+                }
             } else {
                 // When it is incorrect
                 feedbackElem.textContent = "You are incorrect!";
                 if (currTime - 10 <= 0) {
                     currTime = 0;
+                    displayResults();
                 } else {
                     currTime = currTime - 10;
                 }
@@ -131,10 +140,49 @@ function displayQuestion(index) {
     
 }
 
+function displayResults() {
+    // Clear children.
+    var contentEl = document.getElementsByClassName("content").item(0);
+    contentEl.textContent = '';
+    //Build the  result.
+    var H2El = document.createElement("h2");
+    H2El.setAttribute("id", "H2El");
+    H2El.textContent = "All Done!";
+    
+    contentEl.appendChild(H2El);
+
+    var pageEl = document.createElement("p");
+    pageEl.setAttribute("id", "pageEl");
+    pageEl.textContent = 'Your final score is: ' + currTime;
+    contentEl.appendChild(pageEl);
+
+    var labelEl = document.createElement("label");
+    labelEl.setAttribute('for', 'initials');
+    labelEl.textContent = "Enter Initials:";
+    contentEl.appendChild(labelEl);
+    var inputEl = document.createElement("input");
+    inputEl.setAttribute('id', 'input-initials');
+    inputEl.setAttribute('type', 'text');
+    inputEl.setAttribute('name', 'initials');
+    contentEl.appendChild(inputEl);
+
+    var submitEl = document.createElement('button');
+    submitEl.setAttribute('type', 'submit');
+    submitEl.textContent = 'Submit';
+    submitEl.addEventListener('click', function() {
+        // Grab the value typed in input field
+        var initial = inputEl.value;
+        // Store that into localStorage
+        localStorage.setItem(initial, currTime);
+    });
+    contentEl.appendChild(submitEl);
+}
+
 var startButton = document.getElementById('start');
   
 startButton.addEventListener("click",function() {
     currQuestion = 0;
     startTimer();
     displayQuestion(currQuestion);
+    startButton.remove();
 });
