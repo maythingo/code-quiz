@@ -46,17 +46,19 @@ Quiz:
 
 var timer = document.getElementById('time');
 var timerId;
+var currQuestion;
+var currTime;
 
 function startTimer() {
+    // Get the time from index.html
+    currTime = parseInt(timer.textContent);
     // setInterval that decrements by 1 until 0 is reached.
     timerId = setInterval(function() {
-        // Get the time from index.html
-        var currentTime = parseInt(timer.textContent);
         // Decrement the time.
-        currentTime = currentTime - 1;
-        timer.textContent = currentTime;
+        currTime = currTime - 1;
+        timer.textContent = currTime;
         // if decemented time is remaining, keep on calling itself.
-        if (currentTime === 0) {
+        if (currTime === 0) {
             console.log('it is done!!');
             clearInterval(timerId);
         }
@@ -64,11 +66,70 @@ function startTimer() {
     }, 1000);
 }
 
+// 1. go to questions array
+// 2. grab a question at index 0
+//title: "Commonly used data types DO NOT include:",
+///choices: ["strings", "booleans", "alerts", "numbers"],
+///answer: "alerts"
+// 3. convert that question into html.
+// title -> <h2>Commonly used data types DO NOT include:</h2>
+// choices -> <button id="choice1">strings></button>
+//<button id="choice2">booleans></button>
+// ....
 
-
+function displayQuestion(index) {
+    // Grab a question at specified index.
+    var question = questions[index];
+    // Convert the given question into HTML.
+    /*
+        title: "Commonly used data types DO NOT include:",
+        choices: ["strings", "booleans", "alerts", "numbers"],
+        answer: "alerts"
+    */
+    // Convert title into HTML.
+    var title = document.getElementById("quiz-question");
+    title.textContent = question.title;
+    var quizChoices = document.getElementById("quiz-choices");
+    // Empty the children of quizChoices
+    quizChoices.textContent = '';
+    // Convert choices to HTML.
+    // Loop over the choice
+    for (var i = 0; i < question.choices.length; i++) {
+        var choice = question.choices[i];
+        // Display that choice into the brwoser.
+        // Create a new element and define some attributes and src.
+        var choiceEL = document.createElement("ol");
+        choiceEL.textContent = choice;
+        // Insert that element into a div.
+        quizChoices.appendChild(choiceEL);
+        choiceEL.addEventListener("click", function(event) {
+            // Determine whether or not the button that's been clicked is right or wrong.
+            // Grab the "supposed" answer
+            var answer = question.answer;
+            // Grab the choice
+            var chosen = event.target.innerText;
+            // Compare whether answer is equal to choice.
+            var feedbackElem = document.getElementById("feedback");
+            if (answer === chosen) {
+                // When it is correct
+                feedbackElem.textContent = "You got the correct choice!";
+                currQuestion = currQuestion + 1;
+                displayQuestion(currQuestion);
+            } else {
+                // When it is incorrect
+                feedbackElem.textContent = "You are incorrect!";
+                // Penalize 10 seconds
+                currTime = currTime - 10;
+            }
+        });
+    }
+    
+}
 
 var startButton = document.getElementById('start');
   
 startButton.addEventListener("click",function() {
-   startTimer();
+    currQuestion = 0;
+    startTimer();
+    displayQuestion(currQuestion);
 });

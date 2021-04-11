@@ -15,19 +15,21 @@
         <!--Timer---JS-->
     <h1 class="timer">
         Timer
-        <span id="time">10</span>
+        <span id="time">75</span>
         <span> secs</span>
     </h1>
     
     <!--questions-->
-        <p id="quiz"></p>
-
-    <h2>Coding Quiz Challenge</h2>
-        <p>Try to answer the following code-related questions within the time limit. 
-            Keep in mind that incorrect answers will penalize your score/time by ten 
-            seconds!
-        </p>
-    
+    <div class="content">
+        <h2 id="quiz-question">Coding Quiz Challenge</h2>
+        <div id="quiz-choices">
+            <p>Try to answer the following code-related questions within the time limit. 
+                Keep in mind that incorrect answers will penalize your score/time by ten 
+                seconds!
+            </p>
+        </div>
+        <p id="feedback"></p>
+    </div>
         <button class="btn-start" id="start">Start Quiz</button>
 
 
