@@ -55,13 +55,15 @@ function startTimer() {
     // setInterval that decrements by 1 until 0 is reached.
     timerId = setInterval(function() {
         // Decrement the time.
-        currTime = currTime - 1;
-        timer.textContent = currTime;
-        // if decemented time is remaining, keep on calling itself.
-        if (currTime === 0) {
+        if (currTime - 1 <= 0) {
+            currTime = 0;
             console.log('it is done!!');
             clearInterval(timerId);
+        } else {
+            currTime = currTime - 1;
         }
+        timer.textContent = currTime;
+        // if decemented time is remaining, keep on calling itself.
         // else, stop the timer.
     }, 1000);
 }
@@ -118,8 +120,11 @@ function displayQuestion(index) {
             } else {
                 // When it is incorrect
                 feedbackElem.textContent = "You are incorrect!";
-                // Penalize 10 seconds
-                currTime = currTime - 10;
+                if (currTime - 10 <= 0) {
+                    currTime = 0;
+                } else {
+                    currTime = currTime - 10;
+                }
             }
         });
     }
